@@ -1,0 +1,21 @@
+.cold-orangep-background {
+    -fx-background-color:#f5d9a6;
+}
+.somewhatorange-background {
+    -fx-background-color:#f0eadf;
+}
+.colderorange-background {
+    -fx-background-color:#f5f1eb;
+}
+.transparent-background{
+    -fx-background-color:rgba(0,0,0,0);
+}
+.incoming-bubble{
+    -fx-background-color:#b1fcfa;
+    -fx-background-radius:100px;
+}
+.out-bubble{
+    -fx-background-color:#f2daf7 ;
+    -fx-background-radius:100px;
+}
+
