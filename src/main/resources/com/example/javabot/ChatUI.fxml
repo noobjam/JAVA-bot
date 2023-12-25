@@ -64,8 +64,8 @@
                                     <Font name="Andalus" size="16.0" />
                                  </font>
                               </Label>
-                              <Label text="connected" />
-                              <Circle fill="#17d70d" radius="7.0" stroke="BLACK" strokeType="INSIDE">
+                              <Label fx:id="connectedLabel" text="connected" />
+                              <Circle fx:id="statusCircle" fill="#17d70d" radius="7.0" stroke="BLACK" strokeType="INSIDE">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>

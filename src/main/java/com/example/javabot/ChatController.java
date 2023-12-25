@@ -1,6 +1,11 @@
 package com.example.javabot;
 
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.json.JSONObject;
+import javafx.scene.image.Image;
+
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -29,6 +34,11 @@ public class ChatController {
 
     @FXML
     private VBox chatVbox;
+    @FXML
+    private Label connectedLabel;
+
+    @FXML
+    private Circle statusCircle;
 
     @FXML
     private void initialize() {
@@ -51,15 +61,17 @@ public class ChatController {
     }
 
     private void displayUserBubble(String message) {
-        Bubble bubble = new Bubble(message, null, false);
-        //bubble.setAlignment(Pos.TOP_LEFT);
+        // You can replace "user_icon.png" with the actual path to the user icon image
+        Image userIcon = new Image(getClass().getResourceAsStream("img/icones-d-administration-orange.png"));
+        Bubble bubble = new Bubble(message, userIcon, false);
         bubble.setStyle("-fx-background-color: lightgray; -fx-padding: 10px; -fx-background-radius: 10;");
         displayBubble(bubble, true);
     }
 
     private void displayApiBubble(String message) {
-        Bubble bubble = new Bubble(message, null, true);
-        //bubble.setAlignment(Pos.TOP_RIGHT);
+        // You can replace "bot_icon.png" with the actual path to the bot icon image
+        Image botIcon = new Image(getClass().getResourceAsStream("img/java-icon-2048x2048-yxty4s2p.png"));
+        Bubble bubble = new Bubble(message, botIcon, true);
         bubble.setStyle("-fx-background-color: #9EDBF0; -fx-padding: 10px; -fx-background-radius: 10;");
         displayBubble(bubble, false);
     }
@@ -86,6 +98,12 @@ public class ChatController {
 
     private void sendToFastAPI(String userMessage) {
         try {
+            // Update UI to indicate "Thinking..." state
+            Platform.runLater(() -> {
+                connectedLabel.setText("Thinking...");
+                statusCircle.setFill(Color.RED);
+            });
+
             String apiUrl = "http://127.0.0.1:8000/process_query";
             String encodedQuery = URLEncoder.encode(userMessage, StandardCharsets.UTF_8.toString());
 
@@ -94,7 +112,6 @@ public class ChatController {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            // Read the server response asynchronously
             new Thread(() -> {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                     StringBuilder response = new StringBuilder();
@@ -103,15 +120,25 @@ public class ChatController {
                         response.append(responseLine.trim());
                     }
 
-                    // Parse the JSON response
                     JSONObject jsonResponse = new JSONObject(response.toString());
                     String apiResponse = jsonResponse.optString("response", "");
 
-                    // Display the chatbot response in the chat
-                    Platform.runLater(() -> displayApiBubble("Java-Bot: " + apiResponse));
+                    Platform.runLater(() -> {
+                        displayApiBubble("Java-Bot: " + apiResponse);
+
+                        // Update UI to indicate connected state
+                        connectedLabel.setText("Connected");
+                        statusCircle.setFill(Color.GREEN);
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                     // Handle the exception as needed
+
+                    // Update UI to indicate connected state (even if there's an error)
+                    Platform.runLater(() -> {
+                        connectedLabel.setText("Connected");
+                        statusCircle.setFill(Color.GREEN);
+                    });
                 }
             }).start();
 
@@ -119,6 +146,12 @@ public class ChatController {
         } catch (Exception e) {
             e.printStackTrace();
             // Handle the exception as needed
+
+            // Update UI to indicate connected state (even if there's an error)
+            Platform.runLater(() -> {
+                connectedLabel.setText("Connected");
+                statusCircle.setFill(Color.GREEN);
+            });
         }
     }
 }

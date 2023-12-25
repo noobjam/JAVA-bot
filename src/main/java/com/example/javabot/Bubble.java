@@ -14,7 +14,8 @@ public class Bubble extends HBox {
 
         ImageView imageView = new ImageView(senderImage);
         imageView.setFitWidth(30); // Set the width of the sender's image
-
+        imageView.setFitHeight(30); // Set the height of the sender's image
+        imageView.setPreserveRatio(true);
         this.getChildren().addAll(incoming ? text : imageView, incoming ? imageView : text);
         //setStyle("-fx-background-color: " + (incoming ? "lightgray" : "#9EDBF0") + "; " +
           //      "-fx-padding: 10px; " +
