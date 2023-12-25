@@ -76,7 +76,7 @@
                   </HBox>
                   <ScrollPane fx:id="chatScrollPane" hbarPolicy="ALWAYS" pannable="true" prefHeight="561.0" prefWidth="870.0" styleClass="transparent-background" stylesheets="@style.css" vbarPolicy="ALWAYS">
                      <content>
-                        <VBox fx:id="chatVbox" spacing="10"/>
+                        <VBox fx:id="chatVbox" alignment="TOP_CENTER" prefHeight="545.0" prefWidth="853.0" spacing="10" />
                      </content>
                   </ScrollPane>
                   <HBox prefHeight="31.0" prefWidth="870.0">
